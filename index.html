@@ -44,14 +44,14 @@
                 <!-- Swiper -->
                 <div class="swiper-container main-slider swiper-container-initialized swiper-container-horizontal swiper-container-free-mode">
                   <div class="swiper-wrapper">
-                    <div class="swiper-slide swiper-slide-visible swiper-slide-active" id="bx_3218110189_313" style="margin-right: 24px;">
-                      <a href="javascript:void(0)" class="item">
-                        <div class="image swiper-lazy swiper-lazy-loaded" style="background-image: url('video-poster.png');"></div>
-                      </a>
-                    </div>
                     <div class="swiper-slide swiper-slide-visible swiper-slide-next" id="bx_3218110189_314" style="margin-right: 24px;">
                       <a href="javascript:void(0)" class="item">
                         <div class="image swiper-lazy swiper-lazy-loaded" style="background-image: url('https://makbush-dev.axbit.ru/upload/iblock/250/m1eckq0hc4ib943n7nt34j36bsdxrprq.png');"></div>
+                      </a>
+                    </div>
+                    <div class="swiper-slide swiper-slide-visible swiper-slide-active" id="bx_3218110189_313" style="margin-right: 24px;">
+                      <a href="javascript:void(0)" class="item">
+                        <div class="image swiper-lazy swiper-lazy-loaded" style="background-image: url('video-poster.png');"></div>
                       </a>
                     </div>
                     <div class="swiper-slide swiper-slide-visible" id="bx_3218110189_315" style="margin-right: 24px;">
@@ -90,12 +90,19 @@
             <div class="item">
               <div class="video">
                 <video controls src="video.mp4">Ваш браузер не поддерживает встроенные видео.</video>
+                <div class="progress-bar" style="animation-duration: 7000ms;"></div>
               </div>
             </div>
+            <!-- <div class="item">
+              <div class="image" style="background-image: url('https://makbush-dev.axbit.ru/upload/iblock/250/m1eckq0hc4ib943n7nt34j36bsdxrprq.png');">
+                <div class="progress-bar" style="animation-duration: 7000ms;"></div>
+              </div>
+            </div> -->
           </div>
           <div class="swiper-slide">
             <div class="item">
-              <div class="image" style="background-image: url('https://makbush-dev.axbit.ru/upload/iblock/250/m1eckq0hc4ib943n7nt34j36bsdxrprq.png');">
+              <div class="video">
+                <video controls src="video.mp4">Ваш браузер не поддерживает встроенные видео.</video>
                 <div class="progress-bar" style="animation-duration: 7000ms;"></div>
               </div>
             </div>
@@ -137,6 +144,12 @@
         videos.forEach((video) => {
           video.pause();
         })
+      }
+      function playVideo() {
+        const video = $('#bx_slider_2CBnfB08LR .stories-inner .swiper-container .swiper-slide-active video');
+        if (video[0]) {
+          video[0].play();
+        }
       }
       function createPlaceholders() {
         $('#bx_slider_2CBnfB08LR .stories-wrapper .swiper-wrapper').append(
@@ -186,13 +199,16 @@
             slideChange: function () {
               stopVideo();
               $('#bx_slider_2CBnfB08LR .swiper-slide-active .item').removeClass('unseen');
+            },
+            slideChangeTransitionEnd: function () {
+              playVideo();
             }
           },
         });
 
-        $('#bx_slider_2CBnfB08LR .stories-inner .swiper-container .swiper-slide').on('click', function () {
-          
+        $('#bx_slider_2CBnfB08LR .stories-inner .swiper-container .swiper-slide').on('click', function (evt) {
           window.innerStoriesSwiperSlider.slideTo($(this).index(), 400);
+          playVideo();
         });
 
         $('#bx_slider_2CBnfB08LR .stories-inner').on('click', function (e) {
@@ -215,9 +231,8 @@
           window.innerStoriesSwiperSlider.update();
           window.innerStoriesSwiperSlider.slideTo($(this).index(), 0);
         }
-        if (videos[window.innerStoriesSwiperSlider.realIndex]) {
-          videos[window.innerStoriesSwiperSlider.realIndex].play();
-        }
+       
+        playVideo();
       });
 
       $('#bx_slider_2CBnfB08LR .open-all-stories').on('click', function () {
